@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>货物运输信息</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+
+<div style="padding-top: 100px" class="container">
+    <div class="page-header">
+        <h3>货物运输注册</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <form th:action="@{/WAdd1}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>客户名称：</label>
+                    <input type="text" class="form-control" name="logwname" placeholder="请输入车辆名称"/>
+                </div>
+                <div class="form-group">
+                    <label>客户电话：</label>
+                    <input type="text" class="form-control" name="logwphone" placeholder="请输入车牌号"/>
+                </div>
+                <div class="form-group">
+                    <label>载重大小：</label>
+                    <input type="text" class="form-control" name="logwweight" placeholder="请输入载重大小"/>
+                </div>
+                <div class="form-group">
+                    <label>货物类型：</label>
+                    <input type="text" class="form-control" name="logwcargotype" placeholder="请输入货物类型"/>
+                </div>
+                <div class="form-group">
+                    <label>体积：</label>
+                    <input type="text" class="form-control" name="logwvolume" placeholder="请输入货物体积"/>
+                </div>
+                <div class="form-group">
+                    <label>起始地：</label>
+                    <input type="text" class="form-control" name="logworigin" placeholder="请输入起始地"/>
+                </div>
+                <div class="form-group">
+                    <label>目的地：</label>
+                    <input type="text" class="form-control" name="logwdestination" placeholder="请输入目的地"/>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

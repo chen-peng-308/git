@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.userdame.dao.VehicleDao">
+    <select id="getVehicleList" resultType="LogVehicle">
+        select * from logvehicle
+    </select>
+    <insert id="setVehicleAdd">
+        insert into logvehicle values (null,#{logvname},#{logvplatenumber},#{logvfilt},#{logvload},#{logvinspection},#{logvlong},#{logvwide},#{logvtall},#{logvtype})
+    </insert>
+    <select id="getVehicle" resultType="LogVehicle">
+        select * from logvehicle where logvid=#{vid}
+    </select>
+    <delete id="setVehicleDelete">
+        delete from logvehicle where logvid=#{vid}
+    </delete>
+    <update id="setVehicleUpdate">
+        update logvehicle set logvname=#{logvname},logvplatenumber=#{logvplatenumber},logvfilt=#{logvfilt},logvload=#{logvload},logvinspection=#{logvinspection},logvlong=#{logvlong},logvwide=#{logvwide},logvtall=#{logvtall},logvtype=#{logvtype} where logvid=#{logvid}
+    </update>
+    <select id="getVehicleCategory" resultType="String">
+        SELECT DISTINCT logvtype FROM logvehicle;
+    </select>
+
+    <select id="getVPageSize" resultType="int">
+        select count(*) from logvehicle
+    </select>
+    <select id="getVPage" resultType="LogVehicle">
+        select * from logvehicle limit #{page},#{pageSize}
+    </select>
+</mapper>

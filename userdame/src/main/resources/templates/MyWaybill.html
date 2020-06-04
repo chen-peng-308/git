@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>MY订单</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>用户订单管理</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <h4>订单列表</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>订单编号</th>
+                    <th>客户电话</th>
+                    <th>客户姓名</th>
+                    <th>货物类型</th>
+                    <th>重量</th>
+                    <th>体积</th>
+                    <th>起始地</th>
+                    <th>目的地</th>
+                    <th>车辆信息</th>
+                    <th>运费</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="myW:${my}">
+                    <td th:text="${myW.getLogwid()}"></td>
+                    <td th:text="${myW.getLogwphone()}"></td>
+                    <td th:text="${myW.getLogwname()}"></td>
+                    <td th:text="${myW.getLogwcargotype()}"></td>
+                    <td th:text="${myW.getLogwweight()}"></td>
+                    <td th:text="${myW.getLogwvolume()}"></td>
+                    <td th:text="${myW.getLogworigin()}"></td>
+                    <td th:text="${myW.getLogwdestination()}"></td>
+                    <td th:if="${myW.getLogwvehicle()!=null}" th:text="${myW.getLogwvehicle()}"></td>
+                    <td th:if="${myW.getLogwvehicle()==null}" th:text="信息还未确定"></td>
+                    <td th:if="${myW.getLogwprice()!=null}" th:text="${myW.getLogwprice()}"></td>
+                    <td th:if="${myW.getLogwprice()==null}" th:text="信息还未确定"></td>
+                    <td th:text="${myW.getLogwtype()}"></td>
+                    <td><button class="btn btn-warning" data-toggle="modal" th:onclick="|javascript:id4('${myW.getLogwid()}')|" data-target="#payment">付款</button><a class="btn btn-info" th:href="@{/WDelete(id=${myW.getLogwid()},Wname=${myW.getLogwname()})}">删除</a></td>
+                                                                            <!--thymeleaf调用onclick传参数-->
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--<div class="row text-center">-->
+        <!--<div class="col-lg-12">-->
+            <!--<ul class="pager">-->
+                <!--<li><a th:href="@{/Ulist(currPage=1)}">&laquo;</a></li>-->
+                <!--<li><a th:href="@{/Ulist(currPage=${list.currPage-1})}">&lt;</a></li>-->
+                <!--<li th:each="pagenum:${#numbers.sequence(1,list.totalPage)}"><a th:href="@{/Ulist(currPage=${pagenum})}" th:text="${pagenum}"></a></li>-->
+                <!--<li><a th:href="@{/Ulist(currPage=${list.currPage+1})}">&gt;</a></li>-->
+                <!--<li><a th:href="@{/Ulist(currPage=${list.totalPage})}">&raquo;</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="payment">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <!-- 提示框 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                <ul class="nav nav-pills">
+                    <li class="active"><a href="#ZFB" class="h5" data-toggle="tab">支付宝支付</a></li>
+                    <li><a href="#WX" class="h5" data-toggle="tab">微信支付</a></li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="ZFB">
+                    <!-- 内容框 -->
+                    <div class="modal-body">
+                        <img th:src="@{1.png}" width="150" height="150" class="img-responsive">
+                        <input type="hidden" id="id2"/>
+                    </div>
+                    <!-- 按钮框  data-dismiss="modal"  关闭提示框-->
+                    <div class="modal-footer">
+                        <span id="final2" style="float: left;color: red"></span>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" onclick="payment('支付宝')">付款</button>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="WX">
+                    <!-- 内容框 -->
+                    <div class="modal-body">
+                        <img th:src="@{2.png}" width="150" height="150" class="img-responsive">
+                        <input type="hidden" id="id1"/>
+                    </div>
+                <!-- 按钮框  data-dismiss="modal"  关闭提示框-->
+                <div class="modal-footer">
+                <span id="final1" style="float: left;color: red"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="payment('微信')">付款</button>
+                </div>
+                </div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    function payment(payway){
+        var id3=$('#id1').val();
+        $.post("/WPayment",{id:id3,payway:payway},function (data) {
+            if(data){
+                location.reload();
+            }else {
+                $('#final1').html("支付失败");
+                setTimeout("$('#final1').html('');",4000);
+                $('#final2').html("支付失败");
+                setTimeout("$('#final2').html('');",4000);
+            }
+        },"json")
+    }
+
+    function id4(id5) {
+        $('#id1').val(id5);
+        $('#id2').val(id5);
+    }
+</script>
+</body>
+</html>

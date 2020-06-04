@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>账单管理</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>账单管理</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <h4>列表</h4>
+        </div>
+        <div class="col-lg-3">
+            <a class="btn btn-danger" th:href="@{/EAdd}">记录账单</a>
+            <a class="btn btn-danger" th:href="@{/logEcharts1}">财务报表</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>账单编号</th>
+                    <th>支出金额</th>
+                    <th>时间</th>
+                    <th>类型</th>
+                    <th>说明</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="E:${EPage.data}">
+                    <td th:text="${E.logeid}"></td>
+                    <td th:text="${E.logemoney}"></td>
+                    <td th:text="${E.logetime}"></td>
+                    <td th:text="${E.logetype}"></td>
+                    <td th:text="${E.logecontent}"></td>
+                    <td ><a class="btn btn-warning" th:href="@{/EUpdate(id=${E.logeid})}">修改</a><a class="btn btn-info" th:href="@{/EDelete(id=${E.logeid})}">删除</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pager">
+                <li><a th:href="@{/EList(currPage=1)}">&laquo;</a></li>
+                <li><a th:href="@{/EList(currPage=${EPage.currPage-1})}">&lt;</a></li>
+                <li th:each="pagenum:${#numbers.sequence(1,EPage.totalPage)}"><a th:href="@{/EList(currPage=${pagenum})}" th:text="${pagenum}"></a></li>
+                <li><a th:href="@{/EList(currPage=${EPage.currPage+1})}">&gt;</a></li>
+                <li><a th:href="@{/EList(currPage=${EPage.totalPage})}">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

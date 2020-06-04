@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>账单输入</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="page-header">
+        <h3>账单输入</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <form th:action="@{/EAdd1}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>支出金额：</label>
+                    <input type="text" class="form-control" name="logemoney" placeholder="请输入支出金额"/>
+                </div>
+                <div class="form-group">
+                    <label>支出时间：</label>
+                    <input type="Date" class="form-control" name="logetime"/>
+                </div>
+                <div class="form-group">
+                    <label>支出类型：</label>
+                    <select name="logetype" class="form-control form-group">
+                        <option th:value="保养费" th:text="保养费"></option>
+                        <option th:value="修车费" th:text="修车费"></option>
+                        <option th:value="店面费" th:text="店面费"></option>
+                        <option th:value="人员工资" th:text="人员工资"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>详细内容：</label>
+                    <input type="text" class="form-control" name="logecontent" placeholder="请描述支出详细内容"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

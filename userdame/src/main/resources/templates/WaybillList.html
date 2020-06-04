@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>订单管理</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <h4>订单列表</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>订单编号</th>
+                    <th>客户电话</th>
+                    <th>客户姓名</th>
+                    <th>货物类型</th>
+                    <th>重量</th>
+                    <th>体积</th>
+                    <th>起始地</th>
+                    <th>目的地</th>
+                    <th>车辆信息</th>
+                    <th>运费</th>
+                    <th>司机</th>
+                    <th>下单时间</th>
+                    <th>支付时间</th>
+                    <th>支付方式</th>
+                    <th>装货时间</th>
+                    <th>达到时间</th>
+                    <th>卸货时间</th>
+                    <th>返回时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="wList:${wpage.data}">
+                    <td th:text="${wList.logwid}"></td>
+                    <td th:text="${wList.logwphone}"></td>
+                    <td th:text="${wList.logwname}"></td>
+                    <td th:text="${wList.logwcargotype}"></td>
+                    <td th:text="${wList.logwweight}"></td>
+                    <td th:text="${wList.logwvolume}"></td>
+                    <td th:text="${wList.logworigin}"></td>
+                    <td th:text="${wList.logwdestination}"></td>
+                    <td th:if="(${wList.logwvehicle!=null}) and (${wList.logwvehicle!=''})" th:text="${wList.logwvehicle}"></td>
+                    <td th:if="(${wList.logwvehicle==null}) or (${wList.logwvehicle==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwprice!=null}) and (${wList.logwprice!=''})" th:text="${wList.logwprice}"></td>
+                    <td th:if="(${wList.logwprice==null}) or (${wList.logwprice==''})" th:text="信息还未确定"></td>
+
+                    <td th:if="(${wList.logwdriver!=null}) and (${wList.logwdriver!=''})" th:text="${wList.logwdriver}"></td>
+                    <td th:if="(${wList.logwdriver==null}) or (${wList.logwdriver==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwordertime!=null}) and (${wList.logwordertime!=''})" th:text="${wList.logwordertime}"></td>
+                    <td th:if="(${wList.logwordertime==null}) or (${wList.logwordertime==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwpaytime!=null}) and (${wList.logwpaytime!=''})" th:text="${wList.logwpaytime}"></td>
+                    <td th:if="(${wList.logwpaytime==null}) or (${wList.logwpaytime==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwpayway!=null}) and (${wList.logwpayway!=''})" th:text="${wList.logwpayway}"></td>
+                    <td th:if="(${wList.logwpayway==null}) or (${wList.logwpayway==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwloadingtime!=null}) and (${wList.logwloadingtime!=''})" th:text="${wList.logwloadingtime}"></td>
+                    <td th:if="(${wList.logwloadingtime==null}) or (${wList.logwloadingtime==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwarrivetime!=null}) and (${wList.logwarrivetime!=''})" th:text="${wList.logwarrivetime}"></td>
+                    <td th:if="(${wList.logwarrivetime==null}) or (${wList.logwarrivetime==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwunloadtime!=null}) and (${wList.logwunloadtime!=''})" th:text="${wList.logwunloadtime}"></td>
+                    <td th:if="(${wList.logwunloadtime==null}) or (${wList.logwunloadtime==''})" th:text="信息还未确定"></td>
+                    <td th:if="(${wList.logwreturntime!=null}) and (${wList.logwreturntime!=''})" th:text="${wList.logwreturntime}"></td>
+                    <td th:if="(${wList.logwreturntime==null}) or (${wList.logwreturntime==''})" th:text="信息还未确定"></td>
+
+                    <td th:text="${wList.logwtype}"></td>
+                    <td><a class="btn btn-warning" th:href="@{/WUpdate(id=${wList.logwid})}">修改</a><a class="btn btn-info" th:href="@{/WDelete(id=${wList.logwid})}">删除</a></td>
+                    <!--<td><button class="btn btn-warning" data-toggle="modal" th:onclick="|javascript:id4('${myW.getLogwid()}')|" data-target="#payment">付款</button><a class="btn btn-info" th:href="@{/WDelete(id=${myW.getLogwid()},Wname=${myW.getLogwname()})}">删除</a></td>-->
+                    <!--thymeleaf调用onclick传参数-->
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center">
+    <div class="col-lg-12">
+    <ul class="pager">
+    <li><a th:href="@{/WList(currPage=1)}">&laquo;</a></li>
+    <li><a th:href="@{/UlWListist(currPage=${wpage.currPage-1})}">&lt;</a></li>
+    <li th:each="pagenum:${#numbers.sequence(1,wpage.totalPage)}"><a th:href="@{/WList(currPage=${pagenum})}" th:text="${pagenum}"></a></li>
+    <li><a th:href="@{/WList(currPage=${wpage.currPage+1})}">&gt;</a></li>
+    <li><a th:href="@{/WList(currPage=${wpage.totalPage})}">&raquo;</a></li>
+    </ul>
+    </div>
+    </div>
+</div>
+</body>
+</html>

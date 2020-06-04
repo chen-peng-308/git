@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.userdame.dao.WaybillDao">
+    <insert id="setWaybillAdd">
+        <selectKey keyProperty="logwid" order="AFTER"  resultType="java.lang.Integer">
+            select  LAST_INSERT_ID()
+        </selectKey>
+        insert into logwaybill (logwphone,logwname,logwcargotype,logwweight,logwvolume,logworigin,logwdestination,logwvehicle,logwprice,logwdriver,logwordertime,logwpaytime,logwpayway,logwloadingtime,logwarrivetime,logwunloadtime,logwreturntime,logwtype) values (#{logwphone},#{logwname},#{logwcargotype},#{logwweight},#{logwvolume},#{logworigin},#{logwdestination},null,null,null,#{logwordertime},null,null,null,null,null,null,'下单未支付')
+    </insert>
+
+    <!--<insert id="setWaybillAdd" keyProperty="logwid" useGeneratedKeys="true">-->
+        <!--insert into logwaybill values (null,#{logwphone},#{logwname},#{logwcargotype},#{logwweight},#{logwvolume},#{logworigin},#{logwdestination},null,null,null,#{logwordertime},null,null,null,null,null,null,'下单未支付')-->
+    <!--</insert>-->
+    <select id="getMyWaybill" resultType="LogWaybill">
+        select * from logwaybill where logwname=#{name}
+    </select>
+    <delete id="setWaybillDelete">
+        delete from logwaybill where logwid=#{id}
+    </delete>
+    <update id="setWaybillPayment">
+        update logwaybill set logwtype='已付款',logwpayway=#{payway1},logwpaytime=#{paytime} where logwid=#{id1}
+    </update>
+    <!--计算非空的数量-->
+    <select id="getWPageSize" resultType="int">
+        select count(*) from logwaybill where logwpayway is not null
+    </select>
+    <select id="getWPage" resultType="LogWaybill">
+        select * from logwaybill where logwpayway is not null limit #{page},#{pageSize}
+    </select>
+    <select id="getWaybill" resultType="LogWaybill">
+        select * from  logwaybill where logwid=#{id}
+    </select>
+    <update id="setWUpdate">
+        update logwaybill set logwphone=#{logwphone},logwname=#{logwname},logwcargotype=#{logwcargotype},logwweight=#{logwweight},logwvolume=#{logwvolume},logworigin=#{logworigin},logwdestination=#{logwdestination},logwvehicle=#{logwvehicle},logwprice=#{logwprice},logwdriver=#{logwdriver},logwordertime=#{logwordertime},logwpaytime=#{logwpaytime},logwpayway=#{logwpayway},logwloadingtime=#{logwloadingtime},logwarrivetime=#{logwarrivetime},logwarrivetime=#{logwarrivetime},logwunloadtime=#{logwunloadtime},logwreturntime=#{logwreturntime},logwtype=#{logwtype} where logwid=#{logwid}
+    </update>
+    <select id="getDateWaybill" resultType="int">
+        SELECT COALESCE(SUM(logwprice),0) FROM logwaybill WHERE  logwpaytime like #{date}
+    </select>
+
+    <select id="getWaybillList" resultType="LogWaybill">
+        select * from logwaybill where logwpaytime is null
+    </select>
+</mapper>

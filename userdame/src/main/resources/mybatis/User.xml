@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.userdame.dao.UserDao">
+    <select id="getUserList" resultType="LogUser">
+        select * from logisticsuser
+    </select>
+    <insert id="setUserAdd">
+        insert into logisticsuser values (null,#{loguname},#{loguaccount},#{logupassword},#{loguposition},#{loguidentity},#{logufilt})
+    </insert>
+    <select id="getUser" resultType="LogUser">
+        select * from logisticsuser where loguid=#{id}
+    </select>
+    <delete id="setUserDelete">
+        delete from logisticsuser where loguid=#{id}
+    </delete>
+    <update id="setUserUpdate">
+        update logisticsuser set loguname=#{loguname},loguaccount=#{loguaccount},logupassword=#{logupassword},loguposition=#{loguposition},loguidentity=#{loguidentity},logufilt=#{logufilt} where loguid=#{loguid}
+    </update>
+    <select id="getUserDistinct" resultType="String">
+        SELECT DISTINCT loguposition FROM logisticsuser
+    </select>
+
+    <select id="getPageSize" resultType="int">
+        select count(*) from logisticsuser
+    </select>
+    <select id="getPage" resultType="LogUser">
+        select * from logisticsuser limit #{page},#{pageSize}
+    </select>
+    <select id="getEUser" resultType="LogUser">
+        select * from logisticsuser where loguaccount=#{loguaccount} AND logupassword=#{logupassword}
+    </select>
+    <select id="getWList" resultType="LogUser">
+        select * from logisticsuser where loguposition=#{position}
+    </select>
+</mapper>

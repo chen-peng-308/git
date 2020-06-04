@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>列表</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>用户后台管理</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <h4>列表</h4>
+        </div>
+        <div class="col-lg-1">
+            <a class="btn btn-danger" th:href="@{/Uadd}">添加</a>
+            <!--<a class="btn btn-warning" data-toggle="modal" data-target="#AddUser">添加</a>-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>员工编号</th>
+                    <th>员工姓名</th>
+                    <th>员工账号</th>
+                    <!--<th>员工密码</th>-->
+                    <th>员工职位</th>
+                    <th>身号码份证</th>
+                    <th>头像</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="log:${list.data}">
+                    <td th:text="${log.loguid}"></td>
+                    <td th:text="${log.loguname}"></td>
+                    <td th:text="${log.Loguaccount}"></td>
+                    <!--<td th:text="${log.Logupassword}"></td>-->
+                    <td th:text="${log.Loguposition}"></td>
+                    <td th:text="${log.Loguidentity}"></td>
+                    <td><img th:src="@{${log.Logufilt}}" width="50" height="50" class="img-responsive"></td>
+                    <td ><a class="btn btn-warning" th:href="@{/UUpdate(id=${log.Loguid})}">修改</a><a class="btn btn-info" th:href="@{/Udelete(id=${log.Loguid})}">删除</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pager">
+                <li><a th:href="@{/Ulist(currPage=1)}">&laquo;</a></li>
+                <li><a th:href="@{/Ulist(currPage=${list.currPage-1})}">&lt;</a></li>
+                <li th:each="pagenum:${#numbers.sequence(1,list.totalPage)}"><a th:href="@{/Ulist(currPage=${pagenum})}" th:text="${pagenum}"></a></li>
+                <li><a th:href="@{/Ulist(currPage=${list.currPage+1})}">&gt;</a></li>
+                <li><a th:href="@{/Ulist(currPage=${list.totalPage})}">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="AddUser">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <!-- 提示框 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                <ul class="nav nav-pills">
+                    <li class="active"><a href="#AddUser" class="h5" data-toggle="tab">添加用户</a></li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="enter1">
+                    <!-- 内容框 -->
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>员工名称：</label>
+                                <input type="text" class="form-control" id="loguname" placeholder="请输入用户名称"/>
+                            </div>
+                            <div class="form-group">
+                                <label>员工账号：</label>
+                                <input type="text" class="form-control" id="loguaccount" placeholder="请输入账号"/>
+                            </div>
+                            <div class="form-group">
+                                <label>员工密码：</label>
+                                <input type="password" class="form-control" id="logupassword" placeholder="请输入密码"/>
+                            </div>
+                            <div class="form-group">
+                                <label>员工职位：</label>
+                                <select id="loguposition" class="form-control form-group">
+                                    <!--<option th:each="distinct:${Distinct}" th:value="${distinct}" th:text="${distinct}"></option>-->
+                                    <option th:value="员工" th:text="员工"></option>
+                                    <option th:value="司机" th:text="司机"></option>
+                                    <option th:value="财务" th:text="财务"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>员工身份信息：</label>
+                                <input type="text" class="form-control" id="loguidentity" placeholder="请输入身份证号码"/>
+                            </div>
+                            <div class="form-group">
+                                <label>员工照片：</label>
+                                <input type="file" id="logufilt1"/>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 按钮框  data-dismiss="modal"  关闭提示框-->
+                    <div class="modal-footer">
+                        <span id="final" style="float: left;color: red"></span>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" onclick="jsonAdd()">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+    //用户添加
+    function jsonAdd(){
+        var formData = new FormData();
+        var loguname=$('#loguname').val();
+        var loguaccount=$('#loguaccount').val();
+        var logupassword=$('#logupassword').val();
+        var loguposition=$('#loguposition').val();
+        var loguidentity=$('#loguidentity').val();
+        formData.append('logufilt1', $('#logufilt1')[0].files[0]);
+        formData.append('loguname',loguname);
+        formData.append('loguaccount',loguaccount);
+        formData.append('logupassword',logupassword);
+        formData.append('loguposition',loguposition);
+        formData.append('loguidentity',loguidentity);
+        alert(formData.get('loguname'));
+        $.ajax({
+            type: 'POST',
+            url: '/JsonAdd',
+            data: "data="+formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                if(data){
+                    location.reload();
+                }else {
+                    $('#final1').html("用户重复");
+                    setTimeout("$('#final1').html('');",4000);
+                    $('#Uname1').val('');
+                    $('#Upass1').val('');
+                }
+            },
+            error: function(data){
+
+            },
+            dataType: "json",
+        })
+    }
+</script>
+</body>
+</html>

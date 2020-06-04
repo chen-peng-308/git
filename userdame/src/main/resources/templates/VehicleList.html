@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆管理</title>
+    <div th:replace="util.html::boootstrap"></div>
+</head>
+<body>
+<div th:replace="index1::navigation"></div>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>车辆后台管理</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <h4>列表</h4>
+        </div>
+        <div class="col-lg-2">
+            <form th:action="@{/BatchV}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file1">
+            <input type="submit" value="车辆导入">
+            </form>
+        </div>
+        <div class="col-lg-2">
+            <a class="btn btn-danger" th:href="@{/VAdd}">注册车辆</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>车辆编号</th>
+                    <th>车辆名称</th>
+                    <th>车牌号</th>
+                    <th>车辆图片</th>
+                    <th>载重</th>
+                    <th>年检时间</th>
+                    <th>车长</th>
+                    <th>车宽</th>
+                    <th>车高</th>
+                    <th>类型</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="logv:${Vlist.data}">
+                    <td th:text="${logv.logvid}"></td>
+                    <td th:text="${logv.logvname}"></td>
+                    <td th:text="${logv.logvplatenumber}"></td>
+                    <td><img th:src="@{${logv.logvfilt}}" width="50" height="50" class="img-responsive"></td>
+                    <td th:text="${logv.logvload}"></td>
+                    <td th:text="${logv.logvinspection}"></td>
+                    <td th:text="${logv.logvlong}"></td>
+                    <td th:text="${logv.logvwide}"></td>
+                    <td th:text="${logv.logvtall}"></td>
+                    <td th:text="${logv.logvtype}"></td>
+                    <td ><a class="btn btn-warning" th:href="@{/VUpdate(id=${logv.logvid})}">修改</a><a class="btn btn-info" th:href="@{/VDelete(id=${logv.logvid})}">删除</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pager">
+                <li><a th:href="@{/VList(currPage=1)}">&laquo;</a></li>
+                <li><a th:href="@{/VList(currPage=${Vlist.currPage-1})}">&lt;</a></li>
+                <li th:each="pagenum:${#numbers.sequence(1,Vlist.totalPage)}"><a th:href="@{/VList(currPage=${pagenum})}" th:text="${pagenum}"></a></li>
+                <li><a th:href="@{/VList(currPage=${Vlist.currPage+1})}">&gt;</a></li>
+                <li><a th:href="@{/VList(currPage=${Vlist.totalPage})}">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
